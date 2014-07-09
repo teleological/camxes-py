@@ -4,30 +4,30 @@ from compiler.ast import flatten
 import lxml.etree as et
 import os, sys
 
+def memoize(f):
+  memory = {}
+  def g(*args):
+    if args not in memory:
+      memory[args] = f(*args)
+    return memory[args]
+  return g
+
 with open(os.path.join(os.path.dirname(sys.argv[0]), "jvs/en.xml")) as xml:
   tree = et.parse(xml)
 
-known = {}
+@memoize
 def find(rafsi):
-  if rafsi in known:
-    return known[rafsi]
-
   # short rafsi
   results = tree.xpath('//rafsi[text()="%s"]' % rafsi)
   if len(results) > 0:
-    r = results[0].getparent().get('word')
-    known[rafsi] = r
-    return r
+    return results[0].getparent().get('word')
 
   # long rafsi
   for vowel in 'aeiou':
     results = tree.xpath('//valsi[@word="%s%s"]' % (rafsi, vowel))
     if len(results) > 0:
-      r = results[0].get('word')
-      known[rafsi] = r
-      return r
+      return results[0].get('word')
   
-  known[rafsi] = rafsi
   return rafsi
 
 class Transformer:
@@ -48,5 +48,6 @@ class Visitor(NodeVisitor):
         return node.text
     else:
       return flatten(visited_children)
+
 
 
