@@ -8,9 +8,10 @@ import itertools
 from parsimonious.exceptions import ParseError
 
 from structures import jbovlaste_types
+from structures.gensuha import Lerpoi, Vlapoi
 from camxes import configure_platform
 from parsers.camxes_ilmen import Parser
-from transformers.lujvo import Visitor
+from transformers.vlatai import Visitor
 
 def memoize(f):
   memory = {}
@@ -29,12 +30,20 @@ def all_rafsi(word):
 def allowed_pair(pair):
   return (not all(map(lambda c: parse_as("consonant", c), pair))) or parse_as("cluster", pair)
 
+def expand_all(visited):
+  if isinstance(visited, Vlapoi):
+    return map(expand_all, visited.vlapoi)
+  elif isinstance(visited, Lerpoi):
+    return visited.lerpoi
+  else:
+    return visited
+
 def parse_as(rule, text):
   try:
-    Parser(rule).parse(text)
+    visited = Visitor().visit(Parser(rule).parse(text))
+    return expand_all(visited)
   except ParseError as e:
     return False
-  return True
 
 def main(words):
   rafsi = OrderedDict()
@@ -48,8 +57,12 @@ def main(words):
         rafsi[word] += [word[:-1] + "y"]
     if i == len(words)-1:
       rafsi[word] = filter(lambda r: r[-1] in 'aeiou', rafsi[word])
-      if len(rafsi[word]) == 0:
-        raise Exception('No terminal rafsi available for %s' % word)
+    else:
+      for r in rafsi[word]:
+        if parse_as("vowel", r[-1]):
+          rafsi[word] += [r + "r", r + "n"]
+    if len(rafsi[word]) == 0:
+      raise Exception('No terminal rafsi available for %s' % word)
   
   print rafsi
 
@@ -61,12 +74,12 @@ def main(words):
         s += component
       else:
         s += "y" + component
+
+    print s
     if parse_as("lujvo", s):
       good_lujvo += [s]
-      print 'good: ', s
-    else:
-      print 'bad:  ', s
 
+  print '\n'
   print "\n".join(good_lujvo)
 
 if __name__ == '__main__':
