@@ -12,7 +12,7 @@ def memoize(f):
     return memory[args]
   return g
 
-with open(os.path.join(os.path.dirname(sys.argv[0]), "jvs/en.xml")) as xml:
+with open(os.path.join(os.path.dirname(__file__), "../jvs/en.xml")) as xml:
   tree = et.parse(xml)
 
 @memoize
