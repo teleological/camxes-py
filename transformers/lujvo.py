@@ -45,11 +45,14 @@ class Visitor(NodeVisitor):
 
   def generic_visit(self, node, visited_children):
     if node.expr_name and ("rafsi" in node.expr_name or "gismu" in node.expr_name):
-      if self.expand and "rafsi" in node.expr_name:
-        if node.text[-1] == "y":
-          return find(node.text[:-1])
+      if "rafsi" in node.expr_name:
+        rafsi = node.text
+        if node.text[-1] == "y" or len(node.text) == 4:
+          rafsi = node.text[:-1]
+        if self.expand:
+          return find(rafsi)
         else:
-          return find(node.text)
+          return rafsi
       else:
         return node.text
     else:
