@@ -84,11 +84,14 @@ def python_version():
   (major, minor, patch) = platform.python_version_tuple()
   return (major * 10) + minor
 
-def main(text, options):
+def do_parse(text, options):
   parser = build_parser(options)
   parsed = parser.parse(text)
   transformer = build_transformer(options.transformer, parser)
-  transformed = transformer.transform(parsed)
+  return transformer.transform(parsed), transformer
+
+def main(text, options):
+  transformed, transformer = do_parse(text, options)
   print serialize(transformed,
                   options.serializer,
                   default_object_serializer(transformer))
