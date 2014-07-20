@@ -20,6 +20,7 @@ setup(
     keywords = "lojban parser peg",
     url = "http://github.com/teleological/camxes-py",
     py_modules=['camxes'],
+    data_files=[('jvs', ['jvs/en.xml'])],
     long_description=read('README.txt'),
     classifiers=[
         "Development Status :: 3 - Alpha",
