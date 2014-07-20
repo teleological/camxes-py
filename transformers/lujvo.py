@@ -32,14 +32,20 @@ def find(rafsi):
 
 class Transformer:
 
+  def __init__(self, expand):
+    self.expand = expand
+
   def transform(self, parsed):
-    return Visitor().visit(parsed)
+    return Visitor(expand=self.expand).visit(parsed)
 
 class Visitor(NodeVisitor):
 
+  def __init__(self, expand):
+    self.expand = expand
+
   def generic_visit(self, node, visited_children):
     if node.expr_name and ("rafsi" in node.expr_name or "gismu" in node.expr_name):
-      if "rafsi" in node.expr_name:
+      if self.expand and "rafsi" in node.expr_name:
         if node.text[-1] == "y":
           return find(node.text[:-1])
         else:
