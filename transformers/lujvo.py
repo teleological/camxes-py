@@ -47,7 +47,7 @@ class Visitor(NodeVisitor):
     if node.expr_name and ("rafsi" in node.expr_name or "gismu" in node.expr_name):
       if "rafsi" in node.expr_name:
         rafsi = node.text
-        if node.text[-1] == "y" or ("'" not in node.text and len(node.text) == 4):
+        if node.text[-1] == "y" or len(node.text.replace("'", "")) == 4:
           rafsi = node.text[:-1]
         if self.expand:
           return find(rafsi)
