@@ -1353,6 +1353,7 @@ vlatai = (
     / vlatai_zei_clause
     / tosmabru / slinkuhi_no_recurse
     / ( non_bu_zei_cmavo+ )
+    / vlatai_fuhivla
     / BRIVLA
     / CMEVLA
   )
@@ -1390,6 +1391,25 @@ non_bu_zei_cmavo = ( !BU !ZEI cmavo_including_y vlatai_spaces? )
 cmavo_including_y = ( Y / CMAVO )
 
 tosmabru = cmavo+ ( gismu / lujvo / fuhivla )
+
+vlatai_type3_fuhivla = ( &fuhivla
+                         ( ( ( CVC_rafsi / stressed_CVC_rafsi )
+                             r_hyphen
+                             syllable+
+                           )
+                           /
+                           ( ( long_rafsi / stressed_long_rafsi )
+                             r_hyphen
+                             syllable+
+                           )
+                         )
+                       )
+
+vlatai_type4_fuhivla = !vlatai_type3_fuhivla fuhivla
+
+vlatai_type35_fuhivla = &( CCV_rafsi / stressed_CCV_rafsi ) vlatai_type4_fuhivla
+
+vlatai_fuhivla = vlatai_type3_fuhivla / vlatai_type4_fuhivla / vlatai_type35_fuhivla
 
 # ___ GRAMMAR ___
 

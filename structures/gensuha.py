@@ -74,6 +74,14 @@ class Fuhivla(Brivla):
 
   GENTURTAI = "fuhivla"
 
+class Fuhivla3(Brivla):
+
+  GENTURTAI = "type-3 fuhivla"
+
+class Fuhivla4(Brivla):
+
+  GENTURTAI = "type-4 fuhivla"
+
 class Cmavo(Valsi):
 
   GENTURTAI = "cmavo"
