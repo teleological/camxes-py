@@ -23,15 +23,15 @@ FUHIVLA3       = "type-3 fu'ivla"
 FUHIVLA35      = "type-3.5 fu'ivla"
 FUHIVLA4       = "type-4 fu'ivla"
 
-def classify(gensuha):
+def classify(gensuha, simple=False):
   if gensuha is None or len(gensuha) < 1:
     return NALVLA
   elif len(gensuha) == 1:
-    return classify_gensuha(gensuha[0])
+    return classify_gensuha(gensuha[0], simple)
   else:
-    return classify_gensuha_sequence(gensuha)
+    return classify_gensuha_sequence(gensuha, simple)
 
-def classify_gensuha(gensuha):
+def classify_gensuha(gensuha, simple=False):
   if isinstance(gensuha, Cmevla):
     return CMEVLA
   elif isinstance(gensuha, Gismu):
@@ -39,11 +39,14 @@ def classify_gensuha(gensuha):
   elif isinstance(gensuha, Lujvo):
     return LUJVO
   elif isinstance(gensuha, Fuhivla):
+    if simple:
+      return FUHIVLA
     if isinstance(gensuha, Fuhivla3):
       return '%s/%s/%s-%s-%s' % (FUHIVLA, gensuha.type, gensuha.rafsi, gensuha.hyphen, gensuha.payload)
-    else:
-      return '%s/%s' % (FUHIVLA, gensuha.type)
+    return '%s/%s' % (FUHIVLA, gensuha.type)
   elif isinstance(gensuha, Cmavo):
+    if simple:
+      return CMAVO
     return '%s/%s' % (CMAVO, gensuha.selmaho)
   elif isinstance(gensuha, ZeiLujvo):
     return ZEI_LUJVO
@@ -56,9 +59,11 @@ def classify_gensuha(gensuha):
   else:
     return NALVLA
 
-def classify_gensuha_sequence(gensuha):
+def classify_gensuha_sequence(gensuha, simple=False):
   if is_cmavo_sequence(gensuha):
-    return ' '.join(map(classify_gensuha, gensuha))
+    if simple:
+      return CMAVO_COMPOUND
+    return ' '.join(map(lambda g: classify_gensuha(g, simple), gensuha))
   else:
     return NALVLA
 

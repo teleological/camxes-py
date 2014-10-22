@@ -9,10 +9,14 @@ from transformers.vlatai import Visitor
 
 VLATAI_RULE = "vlatai"
 
-def main(text):
+def main(text, simple):
   for word in text:
     gensuha = analyze_morphology(word)
-    print '%s:' % word, jbovlaste_types.classify(gensuha)
+    velski = jbovlaste_types.classify(gensuha, simple)
+    if simple:
+      print velski
+    else:
+      print '%s:' % word, velski
 
 def analyze_morphology(text):
   parser = Parser(VLATAI_RULE)
@@ -26,9 +30,19 @@ def analyze_morphology(text):
   return gensuha
 
 if __name__ == '__main__':
-  import sys
   import itertools
-  text = itertools.chain(*map(lambda s: s.split(' '), sys.argv[1:]))
+
+  from optparse import OptionParser
+  from camxes import VERSION
+  usage_fmt = "usage: %prog [ options ] { input }"
+  options = OptionParser(usage=usage_fmt, version="%prog " + VERSION)
+  options.add_option("-s", "--simple",
+                     help="enable simple output (for jbovlaste)",
+                     action="store_true",
+                     dest="simple")
+  (params, argv) = options.parse_args()
+
+  text = itertools.chain(*map(lambda s: s.split(' '), argv))
   configure_platform()
-  main(text)
+  main(text, params.simple)
 
