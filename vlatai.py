@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import sys
-
 from parsimonious.exceptions import ParseError
 
 from structures import jbovlaste_types
@@ -12,8 +10,9 @@ from transformers.vlatai import Visitor
 VLATAI_RULE = "vlatai"
 
 def main(text):
-  gensuha = analyze_morphology(text)
-  print jbovlaste_types.classify(gensuha)
+  for word in text:
+    gensuha = analyze_morphology(word)
+    print '%s:' % word, jbovlaste_types.classify(gensuha)
 
 def analyze_morphology(text):
   parser = Parser(VLATAI_RULE)
@@ -27,7 +26,9 @@ def analyze_morphology(text):
   return gensuha
 
 if __name__ == '__main__':
-  text = " ".join(sys.argv[1:])
+  import sys
+  import itertools
+  text = itertools.chain(*map(lambda s: s.split(' '), sys.argv[1:]))
   configure_platform()
   main(text)
 

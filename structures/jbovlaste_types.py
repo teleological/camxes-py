@@ -1,6 +1,7 @@
 
 from structures.gensuha \
-  import Cmevla, Gismu, Lujvo, Fuhivla, Fuhivla3, Fuhivla4, Cmavo, ZeiLujvo, BuLetteral, Tosmabru, Slinkuhi
+  import Cmevla, Gismu, Lujvo, Fuhivla, Fuhivla3, Fuhivla35, Fuhivla4, \
+         Cmavo, ZeiLujvo, BuLetteral, Tosmabru, Slinkuhi
 
 # legacy classifications
 CMEVLA        = "cmevla"
@@ -23,6 +24,7 @@ SLINKUHI       = "valslinku'i"
 # non-jvs type
 TOSMABRU       = "tosmabru"
 FUHIVLA3       = "type-3 fu'ivla"
+FUHIVLA35      = "type-3.5 fu'ivla"
 FUHIVLA4       = "type-4 fu'ivla"
 >>>>>>> fuhivla type detection
 
@@ -45,6 +47,8 @@ def classify_gensuha(gensuha):
     return FUHIVLA
   elif isinstance(gensuha, Fuhivla3):
     return FUHIVLA3
+  elif isinstance(gensuha, Fuhivla35):
+    return FUHIVLA35
   elif isinstance(gensuha, Fuhivla4):
     return FUHIVLA4
   elif isinstance(gensuha, Cmavo):
