@@ -10,7 +10,7 @@ from parsimonious_ext.node_types import LITERAL, REGEX
 from structures.gensuha \
   import Gensuha, Cmevla, Gismu, Lujvo, Fuhivla, Cmavo, Naljbo
 
-SELMAHO_UNKNOWN = "TOLSLABU"
+SELMAHO_UNKNOWN = "EXP"
 SELMAHO_Y       = "Y"
 
 # flatten and join textual nodes
