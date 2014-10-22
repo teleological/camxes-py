@@ -1,4 +1,4 @@
-
+import re
 from compiler.ast import flatten
 
 from transformers import camxes_morphology
@@ -11,6 +11,16 @@ class Transformer:
 
   def default_serializer(self):
     return lambda x : x.as_json()
+
+def find(node, regex):
+  if re.match(regex, node.expr_name) is not None:
+    return node
+  else:
+    for child in node.children:
+      f = find(child, regex)
+      if f is not None:
+        return f
+  return None
 
 class Visitor(camxes_morphology.Visitor):
 
@@ -30,10 +40,16 @@ class Visitor(camxes_morphology.Visitor):
     return ZeiLujvo(flatten(visited_children))
 
   def visit_vlatai_type3_fuhivla(self, node, visited_children):
-    return Fuhivla3(flatten(visited_children))
+    a = find(node, r'(stressed_)?(long|CVC)_rafsi').text
+    b = find(node, r'vlatai_fuhivla_hyphen').text
+    c = node.text[(len(a)+len(b)):]
+    return Fuhivla3(flatten(visited_children), a, b, c)
 
   def visit_vlatai_type35_fuhivla(self, node, visited_children):
-    return Fuhivla35(flatten(visited_children))
+    a = find(node, r'(stressed_)?CCV_rafsi').text
+    b = find(node, r'vlatai_fuhivla_hyphen').text
+    c = node.text[(len(a)+len(b)):]
+    return Fuhivla35(flatten(visited_children), a, b, c)
 
   def visit_vlatai_type4_fuhivla(self, node, visited_children):
     return Fuhivla4(flatten(visited_children))

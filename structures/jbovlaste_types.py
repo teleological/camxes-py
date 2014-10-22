@@ -16,17 +16,12 @@ CMAVO_COMPOUND = "cmavo-compound"
 BU_LETTERAL    = "bu-letteral"
 ZEI_LUJVO      = "zei-lujvo"
 
-<<<<<<< HEAD
 # non-jvs types
 TOSMABRU       = "valrtosmabru"
 SLINKUHI       = "valslinku'i"
-=======
-# non-jvs type
-TOSMABRU       = "tosmabru"
 FUHIVLA3       = "type-3 fu'ivla"
 FUHIVLA35      = "type-3.5 fu'ivla"
 FUHIVLA4       = "type-4 fu'ivla"
->>>>>>> fuhivla type detection
 
 def classify(gensuha):
   if gensuha is None or len(gensuha) < 1:
@@ -44,15 +39,12 @@ def classify_gensuha(gensuha):
   elif isinstance(gensuha, Lujvo):
     return LUJVO
   elif isinstance(gensuha, Fuhivla):
-    return FUHIVLA
-  elif isinstance(gensuha, Fuhivla3):
-    return FUHIVLA3
-  elif isinstance(gensuha, Fuhivla35):
-    return FUHIVLA35
-  elif isinstance(gensuha, Fuhivla4):
-    return FUHIVLA4
+    if isinstance(gensuha, Fuhivla3):
+      return '%s/%s/%s-%s-%s' % (FUHIVLA, gensuha.type, gensuha.rafsi, gensuha.hyphen, gensuha.payload)
+    else:
+      return '%s/%s' % (FUHIVLA, gensuha.type)
   elif isinstance(gensuha, Cmavo):
-    return CMAVO
+    return '%s/%s' % (CMAVO, gensuha.selmaho)
   elif isinstance(gensuha, ZeiLujvo):
     return ZEI_LUJVO
   elif isinstance(gensuha, BuLetteral):
@@ -66,7 +58,7 @@ def classify_gensuha(gensuha):
 
 def classify_gensuha_sequence(gensuha):
   if is_cmavo_sequence(gensuha):
-    return CMAVO_COMPOUND
+    return ' '.join(map(classify_gensuha, gensuha))
   else:
     return NALVLA
 

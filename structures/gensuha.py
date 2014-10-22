@@ -74,17 +74,59 @@ class Fuhivla(Brivla):
 
   GENTURTAI = "fuhivla"
 
-class Fuhivla3(Brivla):
+class Fuhivla3(Fuhivla):
 
-  GENTURTAI = "type-3 fuhivla"
+  GENTURTAI = "fuhivla"
 
-class Fuhivla35(Brivla):
+  def __init__(self, lerpoi, rafsi, hyphen, payload):
+    self.lerpoi = lerpoi
+    self.type = "3"
+    self.rafsi = rafsi
+    self.hyphen = hyphen
+    self.payload = payload
 
-  GENTURTAI = "type-3.5 fuhivla"
+  def as_json(self):
+    return OrderedDict([
+      ( "genturtai", self.GENTURTAI ),
+      ( "type",      self.type      ),
+      ( "rafsi",     self.rafsi     ),
+      ( "hyphen",    self.hyphen    ),
+      ( "payload",   self.payload   )
+    ])
 
-class Fuhivla4(Brivla):
+class Fuhivla35(Fuhivla3):
 
-  GENTURTAI = "type-4 fuhivla"
+  GENTURTAI = "fuhivla"
+
+  def __init__(self, lerpoi, rafsi, hyphen, payload):
+    self.lerpoi = lerpoi
+    self.type = "3.5"
+    self.rafsi = rafsi
+    self.hyphen = hyphen
+    self.payload = payload
+
+  def as_json(self):
+    return OrderedDict([
+      ( "genturtai", self.GENTURTAI ),
+      ( "type",      self.type      ),
+      ( "rafsi",     self.rafsi     ),
+      ( "hyphen",    self.hyphen    ),
+      ( "payload",   self.payload   )
+    ])
+
+class Fuhivla4(Fuhivla):
+
+  GENTURTAI = "fuhivla"
+
+  def __init__(self, lerpoi):
+    self.lerpoi = lerpoi
+    self.type = "4"
+
+  def as_json(self):
+    return OrderedDict([
+      ( "genturtai", self.GENTURTAI ),
+      ( "type",      self.type      )
+    ])
 
 class Cmavo(Valsi):
 
