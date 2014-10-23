@@ -1635,7 +1635,7 @@ syllable = ( onset !y nucleus coda? )
 
 consonantal_syllable = (
   consonant syllabic
-  &( consonantal_syllable / onset )
+  !nucleus
   ( consonant &spaces )?
 )
 
