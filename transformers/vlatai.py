@@ -1,4 +1,4 @@
-from compiler.ast import flatten
+from transformers.camxes_morphology import flatten
 
 from transformers import camxes_morphology, find
 from structures.gensuha import BuLetteral, ZeiLujvo, Tosmabru, Slinkuhi, Fuhivla3, Fuhivla35, Fuhivla4

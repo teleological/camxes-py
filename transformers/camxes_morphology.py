@@ -1,7 +1,6 @@
 
 import re
 
-from compiler.ast import flatten
 from transformers import find, find_all
 
 from parsimonious.nodes import NodeVisitor
@@ -15,8 +14,22 @@ SELMAHO_UNKNOWN = "EXP"
 SELMAHO_Y       = "Y"
 
 # flatten and join textual nodes
+def flatten(tree, collapse=False):
+  s = []
+  for t in tree:
+    if isinstance(t, str):
+      s += [t]
+    elif isinstance(t, Gensuha):
+      if collapse:
+        s += [t.lerpoi]
+      else:
+        s += [t]
+    else:
+      s += flatten(t, collapse)
+  return s
 def lerpoi(children):
-  return "".join(flatten(children))
+  return "".join(flatten(children, True))
+
 
 class Transformer:
 
