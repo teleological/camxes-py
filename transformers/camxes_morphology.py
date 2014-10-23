@@ -2,6 +2,7 @@
 import re
 
 from compiler.ast import flatten
+from transformers import find, find_all
 
 from parsimonious.nodes import NodeVisitor
 
@@ -43,7 +44,7 @@ class Visitor(NodeVisitor):
     return Gismu(lerpoi(visited_children))
 
   def visit_lujvo(self, node, visited_children):
-    return Lujvo(lerpoi(visited_children))
+    return Lujvo(lerpoi(visited_children), [r.text for r in find_all(node, r'(.*rafsi|gismu|fuhivla)')])
 
   def visit_fuhivla(self, node, visited_children):
     return Fuhivla(lerpoi(visited_children))
