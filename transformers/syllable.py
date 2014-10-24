@@ -15,13 +15,18 @@ class Visitor(NodeVisitor):
   def __init__(self, trim):
     self.trim = trim
 
-  def visit_fuhivla(self, node, visited_children):
-    return self.finish(visited_children)
-  def visit_jbocme(self, node, visited_children):
-    return self.finish(visited_children)
-
-  def finish(self, visited_children):
+  def visit_fuhivla_any(self, node, visited_children):
     return '-'.join(filter(lambda x: len(x) > 0, flatten(visited_children)))
+
+  def visit_jbocme(self, node, visited_children):
+    kids = filter(lambda x: len(x) > 0, flatten(visited_children))
+    if not any(map(lambda k: any(map(lambda c: c in k, 'AEIOU')), kids)):
+      i = len(kids)-2
+      while i > 0 and 'y' in kids[i]:
+        i -= 1
+      if i > 0:
+        kids[i] = kids[i].upper()
+    return '-'.join(kids)
 
   def generic_visit(self, node, visited_children):
     if node.expr_name and 'syllable' in node.expr_name:

@@ -93,7 +93,7 @@ def do_parse(text, options):
       if text[-1] in 'bcdfgjklmnprstvxz':
         options.rule = 'jbocme'
       else:
-        options.rule = 'fuhivla'
+        options.rule = 'fuhivla_any'
         if text[0] in 'aeiou':
           text = 'valrx' + text
           options.trim = 5
