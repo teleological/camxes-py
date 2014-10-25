@@ -1394,14 +1394,17 @@ cmavo_including_y = ( Y / CMAVO )
 
 tosmabru = cmavo+ ( gismu / lujvo / fuhivla )
 
-vlatai_fuhivla_hyphen = r / n / l
+vlatai_fuhivla_hyphen = ( ( !r consonant r !r)
+                        / ( n n !n ) / ( !n consonant n &n )
+                        / ( l l !l ) / ( !l consonant l &l )
+                        )
 vlatai_type3_fuhivla  = ( &fuhivla
-                          ( ( ( CVC_rafsi / stressed_CVC_rafsi )
+                          ( ( ( long_rafsi / stressed_long_rafsi )
                               vlatai_fuhivla_hyphen
                               syllable+
                             )
                             /
-                            ( ( long_rafsi / stressed_long_rafsi )
+                            ( ( CVC_rafsi / stressed_CVC_rafsi )
                               vlatai_fuhivla_hyphen
                               syllable+
                             )
@@ -1414,9 +1417,9 @@ vlatai_type35_fuhivla = ( &fuhivla
                           )
                         )
 
-vlatai_type4_fuhivla = !vlatai_type3_fuhivla fuhivla
+vlatai_type4_fuhivla = ( !vlatai_type3_fuhivla fuhivla )
 
-vlatai_fuhivla = vlatai_type3_fuhivla / vlatai_type35_fuhivla / vlatai_type4_fuhivla
+vlatai_fuhivla = ( vlatai_type3_fuhivla / vlatai_type35_fuhivla / vlatai_type4_fuhivla )
 
 # ___ GRAMMAR ___
 
