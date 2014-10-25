@@ -59,18 +59,3 @@ class Visitor(camxes_morphology.Visitor):
 
     return Fuhivla4(flatten(visited_children))
 
-  def visit_vlatai_type3_fuhivla(self, node, visited_children):
-    a = find(node, r'(stressed_)?(long|CVC)_rafsi').text
-    b = find(node, r'vlatai_fuhivla_hyphen').text
-    c = node.text[(len(a)+len(b)):]
-    return Fuhivla3(flatten(visited_children), a, b, c)
-
-  def visit_vlatai_type35_fuhivla(self, node, visited_children):
-    a = find(node, r'(stressed_)?CCV_rafsi').text
-    b = find(node, r'vlatai_fuhivla_hyphen').text
-    c = node.text[(len(a)+len(b)):]
-    return Fuhivla35(flatten(visited_children), a, b, c)
-
-  def visit_vlatai_type4_fuhivla(self, node, visited_children):
-    return Fuhivla4(flatten(visited_children))
-
