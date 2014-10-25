@@ -16,7 +16,7 @@ class Visitor(NodeVisitor):
     self.trim = trim
 
   def visit_fuhivla_any(self, node, visited_children):
-    return '-'.join(filter(lambda x: len(x) > 0, flatten(visited_children)))
+    return ','.join(filter(lambda x: len(x) > 0, flatten(visited_children)))
 
   def visit_jbocme(self, node, visited_children):
     kids = filter(lambda x: len(x) > 0, flatten(visited_children))
