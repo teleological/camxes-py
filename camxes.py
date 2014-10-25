@@ -91,7 +91,7 @@ def do_parse(text, options):
       options.rule = 'lujvo'
     elif options.transformer == 'syllable':
       if text[-1] in 'bcdfgjklmnprstvxz':
-        options.rule = 'jbocme'
+        options.rule = 'cmevla'
       else:
         options.rule = 'fuhivla_any'
         if text[0] in 'aeiou':

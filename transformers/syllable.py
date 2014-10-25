@@ -28,6 +28,12 @@ class Visitor(NodeVisitor):
         kids[i] = kids[i].upper()
     return '-'.join(kids)
 
+  def visit_zifcme(self, node, visited_children):
+    raise Exception('zifcme')
+
+  def visit_cmevla(self, node, visited_children):
+    return visited_children[0]
+
   def generic_visit(self, node, visited_children):
     if node.expr_name and 'syllable' in node.expr_name:
       if node.expr_name.startswith('stressed') or any(map(lambda c: c in node.text, 'AEIOU')):
