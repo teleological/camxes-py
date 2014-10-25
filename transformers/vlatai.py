@@ -38,22 +38,24 @@ class Visitor(camxes_morphology.Visitor):
     return ZeiLujvo(flatten(visited_children))
 
   def visit_fuhivla(self, node, visited_children):
-    if len(node.text) >= 6:
-      if (  swallow(lambda: camxes_ilmen.Parser('long_rafsi').parse(node.text[:4]),          None) is not None
-         or swallow(lambda: camxes_ilmen.Parser('stressed_long_rafsi').parse(node.text[:4]), None) is not None):
-        if re.match(r'[^r]r[^r]|[rl]n[^n]|[^n]n[rl]|[rn]l[^l]|[^l]l[rn]', node.text[3:6]):
+    if len(node.text) >= 5:
+      C = r'[bcdfgjklmnprstvxz]'
+      V = r'[aeiou]'
+      hyphen = r'[^r]r[^r]|[rl]n[^n]|[^n]n[rl]|[rn]l[^l]|[^l]l[rn]'
+      
+      if len(node.text) >= 6:
+        if ((   re.match(C+C+V+C, node.text[:4], re.I)
+             or re.match(C+V+C+C, node.text[:4], re.I))
+            and re.match(hyphen, node.text[3:6], re.I)):
           return Fuhivla3(flatten(visited_children), node.text[:4], node.text[4], node.text[5:])
 
-      if (  swallow(lambda: camxes_ilmen.Parser('CCV_rafsi').parse(node.text[:3]),          None) is not None
-         or swallow(lambda: camxes_ilmen.Parser('stressed_CCV_rafsi').parse(node.text[:3]), None) is not None):
-        if re.match(r'[^r]r[^r]|[rl]n[^n]|[^n]n[rl]|[rn]l[^l]|[^l]l[rn]', node.text[2:5]):
+        if (    re.match(C+C+V, node.text[:3], re.I)
+            and re.match(hyphen, node.text[2:5], re.I)):
           return Fuhivla35(flatten(visited_children), node.text[:3], node.text[3], node.text[4:])
 
-    if len(node.text) >= 5:
-      if (  swallow(lambda: camxes_ilmen.Parser('CVC_rafsi').parse(node.text[:3]),          None) is not None
-         or swallow(lambda: camxes_ilmen.Parser('stressed_CVC_rafsi').parse(node.text[:3]), None) is not None):
-        if re.match(r'[^r]r[^r]|[rl]n[^n]|[^n]n[rl]|[rn]l[^l]|[^l]l[rn]', node.text[2:5]):
-          return Fuhivla3(flatten(visited_children), node.text[:3], node.text[3], node.text[4:])
+      if (    re.match(C+V+C, node.text[:3], re.I)
+          and re.match(hyphen, node.text[2:5], re.I)):
+        return Fuhivla3(flatten(visited_children), node.text[:3], node.text[3], node.text[4:])
 
     return Fuhivla4(flatten(visited_children))
 
