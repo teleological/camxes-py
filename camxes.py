@@ -98,7 +98,10 @@ def do_parse(text, options):
           text = 'valrx' + text
           options.trim = 5
         else:
-          text = 'valr' + text
+          if text[0] == 'r':
+            text = 'valn' + text
+          else:
+            text = 'valr' + text
           options.trim = 4
 
   parser = build_parser(options)
