@@ -22,7 +22,7 @@ class Visitor(camxes_morphology.Visitor):
   def visit_tosmabru(self, node, visited_children):
     return Tosmabru(flatten(visited_children))
 
-  def visit_slinkuhi_no_recurse(self, node, visited_children):
+  def visit_slinkuhi(self, node, visited_children):
     return Slinkuhi(flatten(visited_children))
 
   def visit_vlatai_bu_clause(self, node, visited_children):
