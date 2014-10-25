@@ -6,12 +6,6 @@ from transformers.camxes_morphology import flatten
 from transformers import camxes_morphology, find
 from structures.gensuha import BuLetteral, ZeiLujvo, Tosmabru, Slinkuhi, Fuhivla3, Fuhivla35, Fuhivla4
 
-def swallow(fn, ret):
-  try:
-    return fn()
-  except:
-    return ret
-
 class Transformer:
 
   def transform(self, parsed):
