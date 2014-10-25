@@ -39,6 +39,8 @@ text = (
   EOF?
 )
 
+word_sequence = any_word+
+
 intro_null = ( spaces? su_clause* intro_si_clause )
 
 text_part_2 = ( ( CMEVLA_clause+ / indicators? ) free* )
@@ -1645,9 +1647,7 @@ syllable = ( onset !y nucleus coda? )
 
 consonantal_syllable = (
   consonant syllabic
-  &( consonantal_syllable / onset )
-  ( consonant &spaces )?
-  !nucleus
+  &( consonantal_syllable / ( !nucleus onset ) )
   ( consonant &spaces )?
 )
 
