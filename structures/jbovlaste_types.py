@@ -52,19 +52,22 @@ def classify_gensuha(gensuha, simple=False):
   elif isinstance(gensuha, BuLetteral):
     return BU_LETTERAL
   elif isinstance(gensuha, Tosmabru):
-    return TOSMABRU
+    if simple:
+      return TOSMABRU
+    return '%s (%s)' % (TOSMABRU, classify_gensuha_sequence(gensuha.vlapoi))
   elif isinstance(gensuha, Slinkuhi):
     return SLINKUHI
   else:
     return NALVLA
 
 def classify_gensuha_sequence(gensuha, simple=False):
-  if is_cmavo_sequence(gensuha):
-    if simple:
+  if simple:
+    if is_cmavo_sequence(gensuha):
       return CMAVO_COMPOUND
-    return ' '.join(map(lambda g: classify_gensuha(g, simple), gensuha))
+    else:
+      return NALVLA
   else:
-    return NALVLA
+    return ' '.join(map(lambda g: '%s=%s' % (''.join(g.lerpoi), classify_gensuha(g, simple)), gensuha))
 
 def is_cmavo_sequence(gensuha):
   return all(map(lambda g : isinstance(g, Cmavo), gensuha))
