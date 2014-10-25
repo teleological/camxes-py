@@ -10,17 +10,17 @@ from transformers.vlatai import Visitor
 VLATAI_RULE = "vlatai"
 
 def main(text, simple):
+  parser = Parser(VLATAI_RULE)
+  visitor = Visitor()
   for word in text:
-    gensuha = analyze_morphology(word)
+    gensuha = analyze_morphology(parser, visitor, word)
     velski = jbovlaste_types.classify(gensuha, simple)
     if simple:
       print velski
     else:
       print '%s:' % word, velski
 
-def analyze_morphology(text):
-  parser = Parser(VLATAI_RULE)
-  visitor = Visitor()
+def analyze_morphology(parser, visitor, text):
   gensuha = None
   try:
     parsed = parser.parse(text)
