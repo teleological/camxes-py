@@ -30,8 +30,6 @@ def analyze_morphology(text):
   return gensuha
 
 if __name__ == '__main__':
-  import itertools
-
   from optparse import OptionParser
   from camxes import VERSION
   usage_fmt = "usage: %prog [ options ] { input }"
@@ -42,7 +40,6 @@ if __name__ == '__main__':
                      dest="simple")
   (params, argv) = options.parse_args()
 
-  text = itertools.chain(*map(lambda s: s.split(' '), argv))
   configure_platform()
-  main(text, params.simple)
+  main(argv, params.simple)
 
