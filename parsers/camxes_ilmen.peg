@@ -1348,16 +1348,16 @@ CMAVO = (
 
 vlatai = (
   vlatai_spaces?
-  (
+  ( 
     BU
     / ZEI
     / vlatai_bu_clause
     / vlatai_zei_clause
+    / CMEVLA
     / tosmabru / slinkuhi_no_recurse
     / ( non_bu_zei_cmavo+ )
     / fuhivla
     / BRIVLA
-    / CMEVLA
   )
   vlatai_spaces?
 )
@@ -1507,7 +1507,7 @@ brivla_head = ( !cmavo !slinkuhi !h &onset unstressed_syllable* )
 brivla_head_any = ( !cmavo !slinkuhi !h &onset unstressed_syllable_any* )
 
 slinkuhi = ( consonant rafsi_string )
-slinkuhi_no_recurse = ( !cmevla !lujvo ( consonant rafsi_string ) )
+slinkuhi_no_recurse = ( !lujvo ( consonant rafsi_string ) )
 
 rafsi_string = (
   y_less_rafsi*
