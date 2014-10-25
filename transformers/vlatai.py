@@ -40,15 +40,18 @@ class Visitor(camxes_morphology.Visitor):
       if len(node.text) >= 6:
         if ((   re.match(C+C+V+C, node.text[:4], re.I)
              or re.match(C+V+C+C, node.text[:4], re.I))
-            and re.match(hyphen, node.text[3:6], re.I)):
+            and re.match(hyphen, node.text[3:6], re.I)
+            and re.match(C, node.text[5], re.I)):
           return Fuhivla3(flatten(visited_children), node.text[:4], node.text[4], node.text[5:])
 
         if (    re.match(C+C+V, node.text[:3], re.I)
-            and re.match(hyphen, node.text[2:5], re.I)):
+            and re.match(hyphen, node.text[2:5], re.I)
+            and re.match(C, node.text[4], re.I)):
           return Fuhivla35(flatten(visited_children), node.text[:3], node.text[3], node.text[4:])
 
       if (    re.match(C+V+C, node.text[:3], re.I)
-          and re.match(hyphen, node.text[2:5], re.I)):
+          and re.match(hyphen, node.text[2:5], re.I)
+          and re.match(C, node.text[4], re.I)):
         return Fuhivla3(flatten(visited_children), node.text[:3], node.text[3], node.text[4:])
 
     return Fuhivla4(flatten(visited_children))
