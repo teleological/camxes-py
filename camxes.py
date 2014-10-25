@@ -11,7 +11,7 @@ import parsimonious_ext # node_types
 VERSION = "v0.6"
 
 PARSERS      = [ 'camxes-ilmen' ]
-TRANSFORMERS = [ 'camxes-json', 'camxes-morphology', 'vlatai', 'node-coverage', 'debug' ]
+TRANSFORMERS = [ 'camxes-json', 'camxes-morphology', 'vlatai', 'node-coverage', 'debug', 'lujvo-break', 'lujvo-expand', 'syllable' ]
 SERIALIZERS  = [ 'json', 'json-pretty', 'json-compact' ]
 
 IMPLEMENTATION_RECURSION_LIMIT = {
@@ -84,11 +84,34 @@ def python_version():
   (major, minor, patch) = platform.python_version_tuple()
   return (major * 10) + minor
 
-def main(text, options):
+def do_parse(text, options):
+
+  if options.rule is None:
+    if options.transformer in ('lujvo-break', 'lujvo-expand'):
+      options.rule = 'lujvo'
+    elif options.transformer == 'syllable':
+      if text[-1] in 'bcdfgjklmnprstvxz':
+        options.rule = 'cmevla'
+      else:
+        options.rule = 'fuhivla_any'
+        if text[0] in 'aeiou':
+          text = 'valrx' + text
+          options.trim = 5
+        else:
+          if text[0] == 'r':
+            text = 'valn' + text
+          else:
+            text = 'valr' + text
+          options.trim = 4
+
   parser = build_parser(options)
+  transformer = build_transformer(options, parser)
   parsed = parser.parse(text)
-  transformer = build_transformer(options.transformer, parser)
-  transformed = transformer.transform(parsed)
+
+  return transformer.transform(parsed), transformer
+
+def main(text, options):
+  transformed, transformer = do_parse(text, options)
   print serialize(transformed,
                   options.serializer,
                   default_object_serializer(transformer))
@@ -101,22 +124,31 @@ def build_parser(options):
   else:
     bad_parser()
 
-def build_transformer(transformer_option, parser):
-  if transformer_option == 'camxes-json':
+def build_transformer(options, parser):
+  if options.transformer == 'camxes-json':
     from transformers import camxes_json
     return camxes_json.Transformer()
-  elif transformer_option == 'camxes-morphology':
+  elif options.transformer == 'camxes-morphology':
     from transformers import camxes_morphology
     return camxes_morphology.Transformer()
-  elif transformer_option == 'vlatai':
+  elif options.transformer == 'vlatai':
     from transformers import vlatai
     return vlatai.Transformer()
-  elif transformer_option == 'node-coverage':
+  elif options.transformer == 'node-coverage':
     from transformers import node_coverage
     return node_coverage.Transformer(parser)
-  elif transformer_option == 'debug':
+  elif options.transformer == 'debug':
     from transformers import debug
     return debug.Transformer()
+  elif options.transformer == 'lujvo-break':
+    from transformers import lujvo
+    return lujvo.Transformer(expand=False)
+  elif options.transformer == 'lujvo-expand':
+    from transformers import lujvo
+    return lujvo.Transformer(expand=True)
+  elif options.transformer == 'syllable':
+    from transformers import syllable
+    return syllable.Transformer(options.ensure_value('trim', 0))
   else:
     bad_transformer()
 

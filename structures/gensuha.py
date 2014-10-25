@@ -70,9 +70,86 @@ class Lujvo(Brivla, Jvodunlei):
 
   GENTURTAI = "lujvo"
 
+  def __init__(self, lerpoi, rafsi):
+    self.lerpoi = lerpoi
+    self.raw_rafsi = rafsi
+    self.rafsi = []
+    for r in rafsi:
+      if r[-1] == 'y':
+        if r[-2] == "'":
+          self.rafsi.append(r[:-2]) # extended rafsi
+        else:
+          self.rafsi.append(r[:-1]) # normal rafsi plus 'y'
+      elif r[-2:] == "y'":
+        self.rafsi.append(r[:-2]) # extended rafsi
+      elif (len(r) in [4, 5]) and (r[-1] in ['r', 'n']):
+        self.rafsi.append(r[:-1]) # normal rafsi plus hyphen
+      else:
+        self.rafsi.append(r) # normal rafsi
+
+  def as_json(self):
+    return OrderedDict([
+      ( "genturtai", self.GENTURTAI ),
+      ( "rafsi",     self.rafsi     )
+    ])
+
 class Fuhivla(Brivla):
 
   GENTURTAI = "fuhivla"
+
+class Fuhivla3(Fuhivla):
+
+  GENTURTAI = "fuhivla"
+
+  def __init__(self, lerpoi, rafsi, hyphen, payload):
+    self.lerpoi = lerpoi
+    self.type = "3"
+    self.rafsi = rafsi
+    self.hyphen = hyphen
+    self.payload = payload
+
+  def as_json(self):
+    return OrderedDict([
+      ( "genturtai", self.GENTURTAI ),
+      ( "type",      self.type      ),
+      ( "rafsi",     self.rafsi     ),
+      ( "hyphen",    self.hyphen    ),
+      ( "payload",   self.payload   )
+    ])
+
+class Fuhivla35(Fuhivla3):
+
+  GENTURTAI = "fuhivla"
+
+  def __init__(self, lerpoi, rafsi, hyphen, payload):
+    self.lerpoi = lerpoi
+    self.type = "3.5"
+    self.rafsi = rafsi
+    self.hyphen = hyphen
+    self.payload = payload
+
+  def as_json(self):
+    return OrderedDict([
+      ( "genturtai", self.GENTURTAI ),
+      ( "type",      self.type      ),
+      ( "rafsi",     self.rafsi     ),
+      ( "hyphen",    self.hyphen    ),
+      ( "payload",   self.payload   )
+    ])
+
+class Fuhivla4(Fuhivla):
+
+  GENTURTAI = "fuhivla"
+
+  def __init__(self, lerpoi):
+    self.lerpoi = lerpoi
+    self.type = "4"
+
+  def as_json(self):
+    return OrderedDict([
+      ( "genturtai", self.GENTURTAI ),
+      ( "type",      self.type      )
+    ])
 
 class Cmavo(Valsi):
 

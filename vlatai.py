@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import sys
-
 from parsimonious.exceptions import ParseError
 
 from structures import jbovlaste_types
@@ -11,13 +9,18 @@ from transformers.vlatai import Visitor
 
 VLATAI_RULE = "vlatai"
 
-def main(text):
-  gensuha = analyze_morphology(text)
-  print jbovlaste_types.classify(gensuha)
-
-def analyze_morphology(text):
+def main(text, simple):
   parser = Parser(VLATAI_RULE)
   visitor = Visitor()
+  for word in text:
+    gensuha = analyze_morphology(parser, visitor, word)
+    velski = jbovlaste_types.classify(gensuha, simple)
+    if simple:
+      print velski
+    else:
+      print '%s:' % word, velski
+
+def analyze_morphology(parser, visitor, text):
   gensuha = None
   try:
     parsed = parser.parse(text)
@@ -27,7 +30,16 @@ def analyze_morphology(text):
   return gensuha
 
 if __name__ == '__main__':
-  text = " ".join(sys.argv[1:])
+  from optparse import OptionParser
+  from camxes import VERSION
+  usage_fmt = "usage: %prog [ options ] { input }"
+  options = OptionParser(usage=usage_fmt, version="%prog " + VERSION)
+  options.add_option("-s", "--simple",
+                     help="enable simple output (for jbovlaste)",
+                     action="store_true",
+                     dest="simple")
+  (params, argv) = options.parse_args()
+
   configure_platform()
-  main(text)
+  main(argv, params.simple)
 

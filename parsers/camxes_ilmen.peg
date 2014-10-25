@@ -39,6 +39,8 @@ text = (
   EOF?
 )
 
+word_sequence = any_word+
+
 intro_null = ( spaces? su_clause* intro_si_clause )
 
 text_part_2 = ( ( CMEVLA_clause+ / indicators? ) free* )
@@ -1346,15 +1348,16 @@ CMAVO = (
 
 vlatai = (
   vlatai_spaces?
-  (
+  ( 
     BU
     / ZEI
     / vlatai_bu_clause
     / vlatai_zei_clause
-    / tosmabru / slinkuhi_no_recurse
-    / ( non_bu_zei_cmavo+ )
-    / BRIVLA
     / CMEVLA
+    / fuhivla
+    / BRIVLA
+    / tosmabru / slinkuhi
+    / ( non_bu_zei_cmavo+ )
   )
   vlatai_spaces?
 )
@@ -1466,6 +1469,12 @@ fuhivla = (
   consonantal_syllable*
   final_syllable
 )
+fuhivla_any = (
+  fuhivla_head_any
+  stressed_syllable_any
+  consonantal_syllable*
+  final_syllable
+)
 
 stressed_extended_rafsi = ( stressed_brivla_rafsi / stressed_fuhivla_rafsi )
 
@@ -1492,11 +1501,12 @@ stressed_fuhivla_rafsi = ( fuhivla_head stressed_syllable &consonant onset y )
 fuhivla_rafsi = ( &unstressed_syllable fuhivla_head &consonant onset y h? )
 
 fuhivla_head = ( !rafsi_string brivla_head )
+fuhivla_head_any = ( !rafsi_string brivla_head_any )
 
 brivla_head = ( !cmavo !slinkuhi !h &onset unstressed_syllable* )
+brivla_head_any = ( !cmavo !slinkuhi !h &onset unstressed_syllable_any* )
 
 slinkuhi = ( consonant rafsi_string )
-slinkuhi_no_recurse = ( !lujvo ( consonant rafsi_string ) )
 
 rafsi_string = (
   y_less_rafsi*
@@ -1589,12 +1599,14 @@ r_hyphen = ( ( r &consonant ) / ( n &r ) )
 final_syllable = ( onset !y !stressed nucleus !cmevla &post_word )
 
 stressed_syllable = ( ( &stressed syllable ) / ( syllable &stress ) )
+stressed_syllable_any = ( ( &stressed any_syllable ) / ( any_syllable &stress ) )
 
 stressed_diphthong = ( ( &stressed diphthong ) / ( diphthong &stress ) )
 
 stressed_vowel = ( ( &stressed vowel ) / ( vowel &stress ) )
 
 unstressed_syllable = ( ( !stressed syllable !stress ) / consonantal_syllable )
+unstressed_syllable_any = ( ( !stressed any_syllable !stress ) / consonantal_syllable )
 
 unstressed_diphthong = ( !stressed diphthong !stress )
 
@@ -1610,7 +1622,7 @@ syllable = ( onset !y nucleus coda? )
 
 consonantal_syllable = (
   consonant syllabic
-  &( consonantal_syllable / onset )
+  &( consonantal_syllable / ( !nucleus onset ) )
   ( consonant &spaces )?
 )
 
