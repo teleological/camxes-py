@@ -41,6 +41,9 @@ class Lerpoi(Gensuha):
       ( "lerpoi",    self.lerpoi    )
     ])
 
+  def __str__(self):
+    return self.lerpoi
+
 class Naljbo(Lerpoi):
 
   GENTURTAI = "naljbo"

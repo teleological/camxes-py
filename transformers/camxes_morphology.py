@@ -15,7 +15,7 @@ SELMAHO_Y       = "Y"
 
 # flatten and join textual nodes
 def lerpoi(children):
-  return "".join(flatten(children))
+  return "".join(flatten(map(str, children)))
 
 class Transformer:
 
