@@ -14,6 +14,7 @@ NALVLA        = "nalvla"
 
 # new classifications
 CMAVO_COMPOUND = "cmavo-compound"
+PHRASE = "phrase"
 BU_LETTERAL    = "bu-letteral"
 ZEI_LUJVO      = "zei-lujvo"
 
@@ -56,9 +57,13 @@ def classify_gensuha(gensuha):
 def classify_gensuha_sequence(gensuha):
     if is_cmavo_sequence(gensuha):
         return CMAVO_COMPOUND
+    elif is_phrase(gensuha):
+        return PHRASE
     else:
         return NALVLA
 
 def is_cmavo_sequence(gensuha):
     return all(isinstance(g, Cmavo) for g in gensuha)
 
+def is_phrase(gensuha):
+    return all(isinstance(g, (Cmevla, Gismu, Lujvo, Fuhivla, Cmavo)) for g in gensuha)
